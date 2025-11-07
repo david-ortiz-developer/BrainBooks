@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Error 404 - Acceso Denegado</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #0a0f1e 0%, #000 100%);
+      color: #00ffe0;
+      font-family: "Orbitron", Arial, sans-serif;
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+      border: 2px solid #00ffe0;
+      border-radius: 12px;
+      box-shadow: 0 0 25px #00ffe0;
+      background: rgba(10, 20, 30, 0.9);
+    }
+    h1 {
+      font-size: 6em;
+      margin: 0;
+      text-shadow: 0 0 20px #00ffe0, 0 0 40px #00ffe0;
+    }
+    h2 {
+      margin-top: 10px;
+      font-size: 1.8em;
+      letter-spacing: 2px;
+    }
+    p {
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+    .scanline {
+      width: 100%;
+      height: 2px;
+      background: #00ffe0;
+      animation: scan 2s linear infinite;
+    }
+    @keyframes scan {
+      0% { transform: translateY(-40px); opacity: 0; }
+      50% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(40px); opacity: 0; }
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: 2px solid #00ffe0;
+      color: #00ffe0;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    a:hover {
+      background: #00ffe0;
+      color: #000;
+      box-shadow: 0 0 20px #00ffe0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <h2>Acceso Denegado 🚫</h2>
+    <div class="scanline"></div>
+    <p>Has intentado entrar a un sector inexistente del sistema.</p>
+    <a href="/">🔙 Regresar al Panel Central</a>
+  </div>
+</body>
+</html>

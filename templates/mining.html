@@ -1,0 +1,375 @@
+<style>
+  :root{
+    --bg:#0b0f17; --panel:#0f1720; --accent:#00e0c6; --muted:#9aa4b2; --glass: rgba(255,255,255,0.03);
+    --radius:12px; --gap:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:Inter,system-ui,Arial; background:
+    linear-gradient(180deg,#020306 0%, #07111a 100%); color:#e6f7f2;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    padding:28px;
+  }
+
+  header{
+    display:flex; gap:18px; align-items:center; margin-bottom:18px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    background:linear-gradient(135deg,#00121b,#012a22);
+    display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 6px 30px rgba(0,224,198,0.06), inset 0 -6px 20px rgba(0,0,0,0.5);
+  }
+  .logo svg{filter:drop-shadow(0 6px 10px rgba(0,224,198,0.08))}
+  h1{font-size:18px;margin:0;font-weight:800;letter-spacing:0.6px}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  .container{display:grid;grid-template-columns: 1fr 420px; gap:20px; align-items:start;}
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius); padding:18px; box-shadow: 0 6px 30px rgba(2,6,12,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* Table area */
+  .toolbar{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .btn {
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--accent);
+    cursor:pointer;font-weight:600;font-size:13px;
+  }
+  .btn.ghost{color:var(--muted); border-style:dashed}
+  .btn.danger{color:#ff6b6b; border-color: rgba(255,107,107,0.12)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{ text-align:left;color:var(--muted); font-weight:600; padding:10px 8px; font-size:12px}
+  tbody tr{background:var(--glass); border-radius:8px; margin-bottom:10px}
+  td{padding:8px; vertical-align:middle}
+  input[type="text"], select, textarea{
+    width:100%; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03);
+    background:transparent; color:inherit; font-size:13px;
+  }
+  .small{font-size:12px;color:var(--muted)}
+
+  /* image drop area */
+  .drop{
+    border:2px dashed rgba(0,224,198,0.12); border-radius:10px; padding:10px; min-height:68px;
+    display:flex; gap:10px; align-items:center; justify-content:flex-start; flex-wrap:wrap;
+    background: linear-gradient(90deg, rgba(0,224,198,0.01), transparent);
+  }
+  .thumb{width:56px;height:56px;border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:#0b0f13;display:flex;align-items:center;justify-content:center}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+
+  .meta{display:flex;gap:8px;align-items:center}
+  .row-actions{display:flex;gap:8px;align-items:center}
+
+  /* right column */
+  .right-legend{font-size:13px;color:var(--muted); margin-bottom:12px}
+  .export-area{display:flex;flex-direction:column; gap:8px}
+  .info{
+    background:rgba(255,255,255,0.02); padding:12px; border-radius:10px; color:var(--muted); font-size:13px;
+  }
+
+  footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+
+  /* responsive */
+  @media (max-width:980px){
+    .container{grid-template-columns: 1fr; }
+    .right{order:2}
+  }
+.logo-div {padding-top: 35px;}
+</style>
+
+<header>
+  <div class="logo" aria-hidden="true">
+    <!-- small dataset-ish SVG -->
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="4" width="18" height="4" rx="1.5" fill="#001f23"/>
+      <rect x="3" y="10" width="18" height="2" rx="1" fill="#003834"/>
+      <rect x="3" y="14" width="12" height="4" rx="1.5" fill="#00584b"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Dataset Builder</h1>
+    <p class="lead">Alimenta tu modelo con metadata, sube imágenes por categoría y exporta cuando este listo para la fase de entrenamiento.</p>
+  </div>
+</header>
+ <div class="toolbar">
+      <button id="addRow" class="btn">➕ Añadir fila</button>
+      <button id="reset" class="btn ghost">🧹 Limpiar todo</button>
+      <div style="flex:1"></div>
+      <span class="small">Filas: <strong id="rowCount">0</strong></span>
+    </div>
+ <div style="overflow:auto; max-height:62vh;">
+      <table id="dataTable" aria-label="Tabla de datos">
+        <tbody>
+          <!-- filas dinámicas -->
+        </tbody>
+      </table>
+    </div>
+  <div class="right-legend">
+      <strong>Exportar dataset</strong><br>
+      Genera un CSV con las filas y descarga un ZIP con las imágenes organizadas por carpetas según la categoría.
+    </div>
+
+    <div class="export-area">
+      <div class="info">
+        <div><strong>Formato CSV:</strong> id, titulo, descripcion, categoria, imagenes (pipe-separated)</div>
+        <div style="margin-top:8px" class="small">Ejemplo: <code>uuid-1, Gato, foto de gato, animales, gato1.jpg|gato2.jpg</code></div>
+      </div>
+
+      <label class="small">Nombre del dataset</label>
+      <input id="datasetName" type="text" placeholder="mi_dataset" value="mi_dataset">
+
+      <button id="exportCsv" class="btn">📄 Guardar Cambios 📦</button>
+      <button id="exportZip" class="btn"> Probar Modelo</button>
+
+      <div style="height:1px"></div>
+
+      <div class="info small">
+        <strong>Nota:</strong> Los archivos de imagen se procesan en tu dispositivo. No se suben a ningún servidor.
+      </div>
+    </div>
+
+<script>
+/* ---------- Utilidades y estado ---------- */
+const state = { rows: [] };
+const tbody = document.querySelector('#dataTable tbody');
+const rowCount = document.getElementById('rowCount');
+
+function newId() {
+  if (crypto && crypto.randomUUID) return crypto.randomUUID();
+  // fallback
+  return 'id-' + Math.random().toString(36).slice(2,10);
+}
+
+/* ---------- Renderizar filas ---------- */
+function render(){
+  tbody.innerHTML = '';
+  state.rows.forEach((r, idx) => {
+    const tr = document.createElement('tr');
+    tr.dataset.idx = idx;
+
+    tr.innerHTML = `
+      <div>${r.id.slice(0,8)}</div>
+      <div><input type="text" class="title" value="${escapeHtml(r.titulo||'')}" placeholder="Título"></div>
+      <div><input type="text" class="desc" value="${escapeHtml(r.descripcion||'')}" placeholder="Descripción"></div>
+      <div>
+        <select class="categoria">
+          ${renderCategoryOptions(r.categoria || '')}
+        </select>
+      </div>
+      <div>
+        <div class="drop" data-idx="${idx}">
+          <div class="thumbs">
+            ${r.files.map(f => `<span class="thumb" title="${escapeHtml(f.name)}"><img src="${f.preview}" alt=""></span>`).join('') || '<span class="small">sin imágenes</span>'}
+          </div>
+          <div style="margin-left:auto;display:flex;flex-direction:column;gap:6px">
+            <input type="file" accept="image/*" class="fileinput" multiple style="display:none">
+            <button class="btn filebtn">📁 Subir</button>
+            <button class="btn ghost clearimgs">✖ Limpiar</button>
+          </div>
+        </div>
+      </td>
+      <div class="row-actions">
+        <button class="btn" data-action="clone">📑 Duplicar</button>
+        <button class="btn danger" data-action="delete">🗑 Eliminar</button>
+      </div>
+    `;
+    tbody.appendChild(tr);
+
+    // setup events
+    const drop = tr.querySelector('.drop');
+    const fileinput = tr.querySelector('.fileinput');
+    const filebtn = tr.querySelector('.filebtn');
+    const clearimgs = tr.querySelector('.clearimgs');
+
+    filebtn.addEventListener('click',()=>fileinput.click());
+    fileinput.addEventListener('change', (ev) => handleFiles(ev.target.files, idx));
+
+    // drag & drop
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.style.opacity = 0.9; });
+    drop.addEventListener('dragleave', e => { drop.style.opacity = 1; });
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); drop.style.opacity = 1;
+      if (e.dataTransfer && e.dataTransfer.files) handleFiles(e.dataTransfer.files, idx);
+    });
+
+    // actions
+    tr.querySelector('.title').addEventListener('input', e => state.rows[idx].titulo = e.target.value);
+    tr.querySelector('.desc').addEventListener('input', e => state.rows[idx].descripcion = e.target.value);
+    tr.querySelector('.categoria').addEventListener('change', e => state.rows[idx].categoria = e.target.value);
+    tr.querySelector('[data-action="delete"]').addEventListener('click', ()=> { state.rows.splice(idx,1); render(); });
+    tr.querySelector('[data-action="clone"]').addEventListener('click', ()=> { cloneRow(idx); });
+
+    clearimgs.addEventListener('click', ()=> { state.rows[idx].files = []; render(); });
+  });
+
+  rowCount.textContent = state.rows.length;
+}
+
+/* ---------- Helpers ---------- */
+function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;'); }
+
+function renderCategoryOptions(selected){
+  const cats = ['sin_categoria','personas','animales','vehiculos','paisajes','otros'];
+  return cats.map(c => `<option value="${c}" ${c===selected ? 'selected' : ''}>${c.replaceAll('_',' / ')}</option>`).join('');
+}
+
+function cloneRow(idx){
+  const r = state.rows[idx];
+  const clone = {
+    id: newId(),
+    titulo: r.titulo + ' (copia)',
+    descripcion: r.descripcion,
+    categoria: r.categoria,
+    files: [...r.files] // note: files keep same File objects (ok)
+  };
+  state.rows.splice(idx+1,0,clone);
+  render();
+}
+
+/* ---------- Manejo de archivos ---------- */
+function handleFiles(fileList, idx){
+  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  if (!files.length) return;
+  Promise.all(files.map(file => generatePreview(file))).then(previews => {
+    const pair = previews.map((p,i)=> ({ file: files[i], name: files[i].name, preview: p }) );
+    state.rows[idx].files.push(...pair.map(x => x.fileObj = x)); // store file object wrapper
+    // We will keep the real File objects and previews separately
+    // To simplify rendering, map to {name, preview, file}
+    state.rows[idx].files = state.rows[idx].files.concat(pair.map(p => ({ name: p.name, preview: p.preview, file: p.file })));
+    render();
+  });
+}
+
+function generatePreview(file){
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = e => res(e.target.result);
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------- Export CSV ---------- */
+function exportCSV(name){
+  if (!state.rows.length) { alert('No hay filas para exportar'); return; }
+  const header = ['id','titulo','descripcion','categoria','imagenes'];
+  const lines = [header.join(',')];
+  state.rows.forEach(r => {
+    // imagenes pipe-separated
+    const filenames = (r.files||[]).map(f => sanitizeCsvFilename(f.name)).join('|');
+    // escape quotes and commas in text fields
+    const cells = [
+      csvSafe(r.id),
+      csvSafe(r.titulo || ''),
+      csvSafe(r.descripcion || ''),
+      csvSafe(r.categoria || ''),
+      csvSafe(filenames)
+    ];
+    lines.push(cells.join(','));
+  });
+  console.log(lines);
+  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const fileName = `${name || 'dataset'}.csv`;
+  saveAs(blob, fileName);
+}
+
+/* ---------- Export ZIP (CSV + images in folders) ---------- */
+async function exportZIP(datasetName){
+  if (!state.rows.length) { alert('No hay filas para exportar'); return; }
+  if (typeof JSZip === 'undefined') {
+    alert('JSZip no está disponible. Revisa conexión o usa solo CSV.');
+    return;
+  }
+  const zip = new JSZip();
+
+  // guardar CSV en la raíz
+  const csvLines = [];
+  csvLines.push(['id','titulo','descripcion','categoria','imagenes'].join(','));
+
+  // añadir imágenes a la estructura categoría/filename
+  for (const r of state.rows){
+    const filenames = [];
+    if (r.files && r.files.length){
+      for (const f of r.files){
+        const safeName = `${sanitizeZipName(f.name)}`;
+        const folder = (r.categoria || 'sin_categoria');
+        filenames.push(safeName);
+        try {
+          // f.file is a File object
+          zip.file(`${folder}/${safeName}`, f.file);
+        } catch(err){
+          console.warn('No se pudo añadir archivo', err);
+        }
+      }
+    }
+    csvLines.push([csvSafe(r.id), csvSafe(r.titulo||''), csvSafe(r.descripcion||''), csvSafe(r.categoria||''), csvSafe(filenames.join('|'))].join(','));
+  }
+
+  zip.file(`${datasetName || 'dataset'}.csv`, csvLines.join('\n'));
+
+  const blob = await zip.generateAsync({type:'blob'}, meta => {
+    // opcional: podrías mostrar progreso
+    // console.log(meta.percent.toFixed(2) + "%");
+  });
+
+  saveAs(blob, `${datasetName || 'dataset'}.zip`);
+}
+
+/* ---------- Utility: sanitize ---------- */
+function csvSafe(v){
+  if (v==null) return '';
+  const s = String(v).replaceAll('"','""');
+  if (s.includes(',') || s.includes('"') || s.includes('\n')) return `"${s}"`;
+  return s;
+}
+function sanitizeZipName(name){
+  return name.replaceAll(/[^a-zA-Z0-9.\-_() ]/g,'_');
+}
+function sanitizeCsvFilename(name){
+  return name.replaceAll(/,/g,';'); // avoid comma collisions
+}
+
+/* ---------- Inicializadores UI ---------- */
+document.getElementById('addRow').addEventListener('click', ()=> {
+  state.rows.push({ id: newId(), titulo:'', descripcion:'', categoria:'sin_categoria', files: [] });
+  render();
+});
+
+document.getElementById('reset').addEventListener('click', ()=> {
+  if (!confirm('¿Limpiar todo? Esta acción borrará las filas actuales.')) return;
+  state.rows = [];
+  render();
+});
+
+document.getElementById('exportCsv').addEventListener('click', ()=> {
+  const name = document.getElementById('datasetName').value || 'dataset';
+  exportCSV(name);
+});
+
+document.getElementById('exportZip').addEventListener('click', ()=> {
+  const name = document.getElementById('datasetName').value || 'dataset';
+  exportZIP(name);
+});
+
+// add initial example row
+state.rows.push({
+  id:newId(),
+  titulo: 'ejemplo_1',
+  descripcion: 'foto de prueba',
+  categoria: 'personas',
+  files: []
+});
+render();
+
+/* ---------- Accessibility / small helpers ---------- */
+document.addEventListener('click', (e) => {
+  // delegate for file buttons in case of dynamically rendered rows
+  if (e.target.matches('.filebtn')) {
+    const row = e.target.closest('tr');
+    const input = row.querySelector('.fileinput');
+    if (input) input.click();
+  }
+});
+</script>

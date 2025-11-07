@@ -1,0 +1,172 @@
+<script>
+// --- Demo data (tweak as you like) ---
+  const user = { name: "{{user_info['nombre']}}", score: {{user_info['puntos']}}, progress: {{user_info['progress']}}, tasksDone: {{user_info['tasks_done']}}, tasksTotal: {{user_info['tasks_total']}} };
+  const kpis = { delivery: "92%", models: 7, feedback: 12, incidents: 1, earnings: {{user_info['earnings']}}, clusters: {{user_info['clusters']}} };
+  const feed = [
+{% if wall_info != "No Activity": %}
+{% for wall_event in wall_info %}
+    { author: "{{wall_event['author']}}", text: "{{wall_event['text']}}", time: "{{wall_event['time']}}", rating: {{wall_event['rating']}} },{% endfor %}
+{% endif %}
+  ];
+  const videos = [
+{% if learning_data != "No Videos": %}
+{% for video in learning_data %}
+    { id: "v1", title: "{{video['name']}}", length: "{{video['duration']}}" },
+ {% endfor %} {% endif %}  
+  ];
+{% if tasks_list != "No Tasks": %}
+  const timeline = [
+{% for day_event in tasks_list %}
+    { title: "{{ day_event['title'] }}", progress: {{ day_event['progress'] }}, eta: "{{ day_event['eta'] }}" },{% endfor %}
+  ];
+{% endif %}
+{% if calendar_list != "No events": %}
+  const calendar = [
+    {% for day_event in calendar_list %} { day: "{{ day_event['day'] }}", date: "{{ day_event['date'] }}", note: "{{ day_event['note'] }}" },{% endfor %}
+  ];
+{% endif %}
+</script>
+<div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="nav">
+        <button class="nav-item active">Board</button>
+        <button class="nav-item">Modelos</button>
+        <button class="nav-item">Cuenta</button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- HEADER -->
+      <header class="topbar">
+        <div class="greeting">
+          <div class="user-name" id="user-name">Hola, —</div>
+          <div class="user-score" id="user-score">Puntaje: —</div>
+        </div>
+
+        <div class="top-actions">
+          <div class="clock" id="clock">--:--:--</div>
+          <div class="notif">🔔 <span class="badge" id="notif-count">0</span></div>
+        </div>
+      </header>
+
+      <!-- GRID LAYOUT -->
+      <section class="grid">
+
+        <!-- Profile + Progress -->
+        <article class="card profile-card glass">
+          <div class="profile-left">
+            <div class="avatar">DO</div>
+            <div class="profile-info">
+              <div class="name" id="profile-name">David Ortiz</div>
+              <div class="role">{{user_info['descripcion']}}</div>
+            </div>
+          </div>
+
+          <div class="profile-right">
+            <div class="score-big">
+              <div class="score" id="score-big">0</div>
+              <div class="score-label">Score</div>
+            </div>
+            <div class="progress">
+              <div class="progress-label">Progreso de metas</div>
+              <div class="progress-bar" aria-hidden="true">
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+              </div>
+              <div class="progress-meta" id="progress-meta">0/0 tareas</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- KPIs -->
+        <article class="card kpi-grid glass" aria-label="Métricas clave">
+          <div class="kpi">
+            <div class="kpi-value" id="kpi-1">0</div>
+            <div class="kpi-label">Tasa de entrega</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value" id="kpi-2">0</div>
+            <div class="kpi-label">Modelos deploy</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value" id="kpi-3">0</div>
+            <div class="kpi-label">Feedback hoy</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value" id="kpi-4">0</div>
+            <div class="kpi-label">Incidentes</div>
+          </div>
+	<div class="kpi">
+            <div class="kpi-value" id="kpi-5">0</div>
+            <div class="kpi-label">Ganancias</div>
+          </div>
+	<div class="kpi">
+            <div class="kpi-value" id="kpi-6">0</div>
+            <div class="kpi-label">Clusters</div>
+          </div>
+        </article>
+
+        <!-- Activity Feed (Muro) -->
+        <article class="card feed-card glass">
+          <header class="card-head">
+            <h3>Muro de actividad</h3>
+            <button class="btn small" id="ask-opinion">Solicitar opinión</button>
+          </header>
+          <div class="feed" id="feed">
+            <!-- Items injected by JS -->
+          </div>
+        </article>
+
+        <!-- Videos -->
+        <article class="card video-card glass">
+          <header class="card-head">
+            <h3>{{user_info['titulo_videos']}}</h3>
+          </header>
+          <div class="video-list" id="video-list">
+            <!-- injected -->
+          </div>
+        </article>
+	
+        <!-- Timeline + Tasks -->
+
+        <article class="card timeline-card glass">
+          <header class="card-head">
+            <h3>Líneas de tiempo & Pendientes</h3>
+            <div class="timeline-summary" id="timeline-summary">0 pendientes</div>
+          </header>
+
+          <div class="timeline" id="timeline">
+            <!-- timeline items injected -->
+          </div>
+        </article>
+	
+
+        
+       {% if calendar_list != "No events": %}
+	<!-- Agenda / Calendar -->
+        <article class="card calendar-card glass">
+          <header class="card-head">
+            <h3>Agenda</h3>
+          </header>
+          <div class="calendar" id="calendar">
+            <!-- simple day list -->
+          </div>
+        </article>
+       {% endif %}
+
+      </section>
+    </main>
+  </div>
+
+  <!-- VIDEO MODAL -->
+  <div id="video-modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div id="video-container"></div>
+      <div class="modal-caption" id="video-caption"></div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</div>

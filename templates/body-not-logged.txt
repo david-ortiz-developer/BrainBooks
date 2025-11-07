@@ -1,0 +1,43 @@
+<div class="top-paragraph"><p>{{bodyTexts["paragraph1"]}}</div>
+<div class="frame">
+ <img src="{{bodyTexts["image1Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName1"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText1"]}}</div>
+</div>   
+<div class="frame">
+ <img src="{{bodyTexts["image2Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName2"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText2"]}}</div>   
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image3Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName3"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText3"]}}</div>  
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image4Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName4"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText4"]}}</div>   
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image5Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName5"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText5"]}}</div>  
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image6Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName6"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText6"]}}</div>   
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image7Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName7"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText7"]}}</div>   
+</div>
+<div class="frame">
+ <img src="{{bodyTexts["image8Name"]}}" height = 115px width = 105px class="home-image"/>
+            <div class="itemTitle">{{bodyTexts["itemName8"]}}</div>
+            <div class = "itemText">{{bodyTexts["itemText8"]}}</div>   
+</div>
+
+

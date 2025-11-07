@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{menu_texts['header-name']}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cscool.css') }}">
+</head>
+<body>
+<div  class="cscool"> 
+  <nav class="tab-menu" align="center">
+    <a href="/" {% if menu_texts['actual-page'] == "home"%} class="active"{% endif %}>
+    <table>
+      <tr><td>
+{% if menu_texts['actual-page'] == "home"%}
+        <img src="{{ url_for('static', filename='img/home-menu-blue.PNG') }} " width=40px>
+        </td></tr><td>
+          <div class="top-menu-item">
+            {{menu_texts['one']}}
+          </div>
+        </td>
+{% else %}
+        <img src="{{ url_for('static', filename='img/home-menu.PNG') }} " width=40px>
+        </td></tr><td>
+        <div class="top-menu-item-blue">
+            {{menu_texts['one']}}
+        </div>
+       </td>
+{% endif %}
+    </tr>
+</table>
+</a>
+<a href="/login?login=true" {% if menu_texts['actual-page'] == "login"%} class="active"{% endif %}>
+    <table>
+      <tr><td>
+{% if menu_texts['actual-page'] == "login"%}
+        <img src="{{ url_for('static', filename='img/login-menu-blue.PNG') }} " width=40px>
+        </td></tr><td>
+          <div class="top-menu-item">
+            {{menu_texts['two']}}
+          </div>
+        </td>
+{% else %}
+        <img src="{{ url_for('static', filename='img/login-menu.PNG') }} " width=40px>
+        </td></tr><td>
+        <div class="top-menu-item-blue">
+            {{menu_texts['two']}}
+        </div>
+       </td>
+{% endif %}
+    </tr>
+</table>
+</a>
+<a href="/register" {% if menu_texts['actual-page'] == "register"%} class="active"{% endif %}>
+    <table>
+      <tr><td>
+{% if menu_texts['actual-page'] == "register"%}
+        <img src="{{ url_for('static', filename='img/register-menu-blue.PNG') }} " width=40px>
+        </td></tr><td>
+          <div class="top-menu-item">
+            {{menu_texts['three']}}
+          </div>
+        </td>
+{% else %}
+        <img src="{{ url_for('static', filename='img/register-menu.PNG') }} " width=40px>
+        </td></tr><td>
+        <div class="top-menu-item-blue">
+            {{menu_texts['three']}}
+        </div>
+       </td>
+{% endif %}
+    </tr>
+</table>
+</a>
+<a href="/mining" {% if menu_texts['actual-page'] == "mining"%} class="active"{% endif %}>
+    <table>
+      <tr><td>
+{% if menu_texts['actual-page'] == "mining"%}
+        <img src="{{ url_for('static', filename='img/mining-menu-blue.PNG') }} " width=40px>
+        </td></tr><td>
+          <div class="top-menu-item">
+            {{menu_texts['four']}}
+          </div>
+        </td>
+{% else %}
+        <img src="{{ url_for('static', filename='img/mining-menu.PNG') }} " width=40px>
+        </td></tr><td>
+        <div class="top-menu-item-blue">
+            {{menu_texts['four']}}
+        </div>
+       </td>
+{% endif %}
+    </tr>
+</table>
+</a>
+</nav>
+<pre class="ascii-art"><div align="center"><img src="{{ url_for('static', filename='img/BB.png') }}" width="300px"></div></pre>

@@ -1,0 +1,32 @@
+<div class="container">
+    <h1 class="title">{{page_texts["title"]}}</h1>
+    <p class="subtitle">{{page_texts["subtitle"]}}</p>
+
+    <div class="diamond-grid">
+            {% for model in models %}
+<h3>{{ model.name }}</h3>
+            <div class="diamond-card" onclick="window.location='{{ url_for('model_detail', model_id=model.id) }}'">
+                <div class="diamond" style="filter: brightness({{ 0.3 + model.progress/100 }});">
+                    💎 {{page_texts["progress-text"]}} {{ model.progress }}%  💎<div class="timeline-bar" aria-hidden="true"><div class="timeline-fill" style="width:{{ model.progress }}%"></div></div>
+
+                </div>
+                
+                <p>{{ model.columns }} {{page_texts['tensors-text']}}</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ model.progress }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+
+        <div class="diamond-card create-card">
+            <form method="POST" action="{{ url_for('create_model') }}" enctype="multipart/form-data">
+                <div class="diamond create"><h2> ➕➕ {{page_texts['new-model']}} ➕➕</h2></div>
+                <input type="text" name="name" placeholder="{{page_texts['new-name-placeholder']}}">
+                <input type="number" name="columns" placeholder="{{page_texts['tensors-text']}}" min="1" max="20" required>
+                <input type="area" name="description" placeholder="{{page_texts['description-placeholder']}}">
+                <input type="file" name="image" accept="image/*">
+                <button type="submit">{{page_texts['create']}}</button>
+            </form>
+        </div>
+    </div>
+</div>

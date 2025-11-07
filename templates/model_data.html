@@ -1,0 +1,6 @@
+<div style="float: inline-start; position: absolute; z-index: 12;" onClick='javascript:window.history.back()'><img src='{{url_for('static', filename='img/volver.png')}}' width='50px'/></br>{{page_texts['volver']}}</div><div class="frame"><h2>{{page_texts['model-name']}}</h2>
+<div class="cool-table" width="100%">{% for row in first_twelve %}<div class="frame">{% for cell in row['cells']%}<div class="card"><table width = "100%"><tr><td width="50%"> {{ cell[3] }}</td><td> {{ cell[4] }}</br><a href="" style="color:white;">{{page_texts['edit-cell']}}</a></td></tr></table></div> <svg width="140" height="60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 0 0 L 140 5, 0 10, 140 10, 0 30, 140 50, 0 60, 140 60"
+        stroke="gray" fill="transparent" stroke-width="2"/>
+</svg>{%endfor%}</div>{%endfor%}</div>
+</div>

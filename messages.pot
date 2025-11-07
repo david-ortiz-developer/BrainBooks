@@ -1,0 +1,48 @@
+# Translations template for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-01-04 16:38-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:7
+msgid "Home"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:8
+msgid "Acceso"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:9
+msgid "Registro"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:10
+msgid "Minar"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:14
+msgid "static/img/pin-back.PNG"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:15
+msgid "paragraph1"
+msgstr ""
+
+#: /Users/admin/Documents/dataverse-urbano-backend/home_not_logged.py:17
+msgid "about-us"
+msgstr ""
+
+

@@ -1,0 +1,63 @@
+from flask import Flask, render_template
+import login
+import home_not_logged
+import models_showroom as modelos
+import register
+import authentication as auth
+from flask_babel import Babel
+
+babel = Babel()
+
+def get_locale():
+    return 'es'
+
+def create_app():
+    app = Flask(__name__, instance_relative_config=False)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        BABEL_DEFAULT_LOCALE='es',
+        BABEL_DEFAULT_TIMEZONE='UTC',
+        LANGUAGES={'en': 'English', 'es': 'Español', 'fr': 'Français'},
+    )
+
+    # Inicializamos Babel; pasar locale_selector al init_app es la forma moderna.
+    # get_locale debe existir antes de llamar init_app.
+    # babel.init_app(app, locale_selector=get_locale)
+    print(get_locale())
+    babel.init_app(app, locale_selector=get_locale)
+    return app
+app = create_app()
+session = False
+
+@app.route('/')
+def hello_world():
+    if session == True:
+        return appFrame()
+    else:
+        return appOnboarding()
+@app.route("/login", methods=["GET"]) 
+def login_form():
+    return login.loginForm()
+
+@app.route("/login", methods=["POST"])
+def login_auth():
+    return auth.login_user("David", "aaaaa")
+ 
+@app.route("/register", methods=["GET"])
+def register_form():
+  return register.registerForm() 
+
+@app.route("/models", methods=["GET"])
+def models_form():
+  return modelos.showroom()
+ 
+@app.route("/login", methods=["DELETE", "PUT"]) 
+def deny():
+    return "This method is not allowed"
+def appFrame():
+    return '<p>Hola mundo te amo</p>'
+def appOnboarding():
+    return home_not_logged1.appOnboarding()
+
+if __name__ == '__main__':
+    app.run(debug=True)

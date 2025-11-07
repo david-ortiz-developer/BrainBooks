@@ -1,0 +1,19 @@
+<div align="center">
+<div class="form-container">
+    <h2>{{ page_texts['form-title']}}</h2>
+<div class="errore">{% if err_message != "" %}
+{{err_message}}
+{% endif %}
+</div>
+    <form action="/login" method="POST">
+        <input type="email" name="email" placeholder="{{ page_texts['email-placeholder'] }}" required>
+        <input type="password" name="pw" placeholder="{{ page_texts['pw-placeholder']}}" required>
+        <button type="submit">{{page_texts['enter-button']}}</button>
+    </form>
+<p>
+<div align="justify" class="disclamier-little">{{page_texts['politics']}}<a href="/politicas" class="a-cool">{{page_texts['politics-link']}}</a>
+</div><p></p>
+<p> <a href="/sendpw" class="a-cool">{{page_texts['reset-pw']}}</a>
+</div>
+</div>
+</div>
