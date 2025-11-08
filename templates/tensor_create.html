@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ _("Crear Tensor – Big Preciouss Data Mining") }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cscool.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer; /* ✅ Hace que salga la manito */
+    font-size: 0.9em;
+    color: var(--accent);
+    padding: 0 4px;
+}
+
+/* El popup */
+.tooltip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    width: max-content;
+    max-width: 240px;
+    font-size: 0.75em;
+    white-space: normal;
+    z-index: 9999;
+    opacity: 1;
+}
+
+/* La flechita */
+.tooltip:hover::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.85) transparent transparent transparent;
+}
+
+</style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="cool-bg"></div>
+
+    <div class="container-center">
+
+        <!-- PANEL PRINCIPAL -->
+        <div class="glass-box panel-xxl">
+
+            <h1 class="title-hero neon-text">
+                {{ _("🧬 Constructor de Tensores") }}
+            </h1>
+
+            <p class="subtitle-muted">
+                {{ _("Construye tensores como si estuvieras armando un Lego.  Dimensión por dimensión. Simple. Visual. Poderoso.") }}
+            </p>
+
+            <hr class="divider"/>
+
+            <form action="/tensor/create" method="POST" class="cool-form">
+
+                <!-- NOMBRE -->
+                <label class="cool-label">
+                    {{ _("Nombre del tensor") }}
+                    <span class="tooltip" data-tip="{{ _('Un alias humano. No necesitas llamarlo T4xRank.') }}"> ⓘ </span>
+                </label>
+
+                <input
+                    type="text"
+                    name="tensor_name"
+                    class="cool-input"
+                    placeholder="{{ _('Ej: imagen32x32') }}"
+                    required
+                />
+
+                <!-- TIPO DE ESTRUCTURA -->
+                <label class="cool-label">
+                    {{ _("Tipo de estructura") }}
+                    <span class="tooltip" data-tip="{{ _('Escalar=1 valor. Vector=lista. Matriz=2D. Tensor=3D+.') }}"> ⓘ </span>
+                </label>
+
+                <select name="tensor_type" class="cool-select">
+                    <option value="scalar">{{ _("Escalar") }}</option>
+                    <option value="vector">{{ _("Vector") }}</option>
+                    <option value="matrix">{{ _("Matriz") }}</option>
+                    <option value="tensor3">{{ _("Tensor 3D") }}</option>
+                    <option value="tensorN">{{ _("Tensor ND") }}</option>
+                </select>
+
+                <!-- DIMENSIONES -->
+                <label class="cool-label">
+                    {{ _("Dimensiones") }}
+                    <span class="tooltip" data-tip="{{ _('Cada dimensión añade profundidad al espacio de datos.') }}"> ⓘ </span>
+                </label>
+
+                <div id="dimensions-container" class="dimension-stack"></div>
+
+                <button type="button" id="add-dimension" class="cool-button-outline">
+                    + {{ _("Añadir dimensión") }}
+                </button>
+
+                <!-- DTYPE -->
+                <label class="cool-label">
+                    {{ _("Tipo de dato") }}
+                    <span class="tooltip" data-tip="{{ _('float32 es estándar para inteligencia artificial.') }}"> ⓘ </span>
+                </label>
+
+                <select name="dtype" class="cool-select">
+                    <option value="float32">{{ _("float32") }}</option>
+                    <option value="int32">{{ _("int32") }}</option>
+                    <option value="bool">{{ _("bool") }}</option>
+                    <option value="string">{{ _("string") }}</option>
+                </select>
+
+                <!-- INIT METHOD -->
+                <label class="cool-label">
+                    {{ _("Método de inicialización") }}
+                    <span class="tooltip" data-tip="{{ _('Define cómo se rellenará el tensor. Manual, ceros, aleatorio...') }}"> ⓘ </span>
+                </label>
+
+                <select name="init" class="cool-select">
+                    <option value="zeros">{{ _("Ceros") }}</option>
+                    <option value="ones">{{ _("Unos") }}</option>
+                    <option value="random">{{ _("Aleatorio") }}</option>
+                    <option value="manual">{{ _("Manual") }}</option>
+                    <option value="onehot">{{ _("One-Hot") }}</option>
+                </select>
+
+                <!-- SUBMIT -->
+                <button type="submit" class="cool-button-primary neon-border">
+                    {{ _("Crear Tensor") }}
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT DIMENSIONES -->
+    <script>
+        document.getElementById("add-dimension").addEventListener("click", () => {
+            const container = document.getElementById("dimensions-container");
+
+            const input = document.createElement("input");
+            input.type = "number";
+            input.min = "1";
+            input.placeholder = "{{ _('Ej: 32') }}";
+            input.name = "dimension[]";
+            input.className = "cool-input dim-input";
+
+            container.appendChild(input);
+        });
+    </script>
+
+</body>
+</html>

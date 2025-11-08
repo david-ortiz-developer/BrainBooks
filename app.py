@@ -16,6 +16,7 @@ import connection_manager as conn_mngr
 import models_detail
 import JWTAuthenticator as jwtauth
 import model_data
+import tensor_create as new_tensor
 
 def create_app():
 ## returns the app with babel and flask on it.
@@ -135,6 +136,27 @@ def verify_token():
     if isinstance(decoded_payload, str):
         return {'error': decoded_payload}, 400
     return {'payload': decoded_payload }
+
+@app.route("/tensor/create", methods=["GET", "POST"])
+def tensor_create():
+    if request.method == "POST":
+        tensor_name = request.form.get("tensor_name")
+        tensor_type = request.form.get("tensor_type")
+        dims = request.form.getlist("dimension[]")
+        dtype = request.form.get("dtype")
+        init_method = request.form.get("init")
+
+        return jsonify({
+            "status": "ok",
+            "tensor_name": tensor_name,
+            "tensor_type": tensor_type,
+            "dimensions": dims,
+            "dtype": dtype,
+            "init_method": init_method
+        })
+    token = request.args.get("token")
+    return new_tensor.tensor_form(token)
+
 
 @app.errorhandler(404)
 def page_not_found(error_str):
